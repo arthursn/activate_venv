@@ -78,6 +78,3 @@ The script searches for activation scripts in the following order:
 If no path is specified, both versions use `git rev-parse --show-toplevel` to find the root of the current git repository and search there.
 @@ ... @@
 
-## License
-
-[MIT](LICENSE)
