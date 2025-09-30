@@ -1,6 +1,6 @@
 # Virtual Environment Activator
 
-A simple shell utility to automatically find and activate Python virtual environments in your projects.
+A simple utility to automatically find and activate Python virtual environments in your projects, available for both Bash/Zsh and PowerShell.
 
 ## Overview
 
@@ -9,11 +9,13 @@ This utility provides a convenient way to activate Python virtual environments w
 ## Features
 
 - Activates virtual environments with a simple command
-- Searches in common locations (`./bin/activate` and `./.venv/bin/activate`)
+- Searches in common locations for activation scripts
 - Automatically finds the git repository root when no path is specified
-- Provides a convenient shell alias `venv`
+- Provides a convenient alias `venv` in both shell environments
 
 ## Installation
+
+### Bash/Zsh
 
 Add the following to your `.bashrc` or `.zshrc`:
 
@@ -21,27 +23,60 @@ Add the following to your `.bashrc` or `.zshrc`:
 source /path/to/activate_venv.sh
 ```
 
+### PowerShell
+
+Add the following to your PowerShell profile:
+
+```powershell
+. /path/to/ActivateVenv.ps1
+```
+
+To find your profile location, run `$PROFILE` in PowerShell. You may need to create the profile file if it doesn't exist.
+
 ## Usage
 
-### Activate a virtual environment in a specific directory
+### Bash/Zsh
+
+#### Activate a virtual environment in a specific directory
 
 ```bash
 venv /path/to/project
 ```
 
-### Activate a virtual environment in the current git repository
+#### Activate a virtual environment in the current git repository
 
 ```bash
 venv
 ```
 
+### PowerShell
+
+#### Activate a virtual environment in a specific directory
+
+```powershell
+Venv -Dir "/path/to/project"
+```
+
+#### Activate a virtual environment in the current git repository
+
+```powershell
+Venv
+```
+
 ## How It Works
 
+### Bash/Zsh
 The script searches for activation scripts in the following order:
 1. `<specified_path>/bin/activate`
 2. `<specified_path>/.venv/bin/activate`
 
-If no path is specified, it uses `git rev-parse --show-toplevel` to find the root of the current git repository and searches there.
+### PowerShell
+The script searches for activation scripts in the following order:
+1. `<specified_path>\Scripts\Activate.ps1`
+2. `<specified_path>\.venv\Scripts\Activate.ps1`
+
+If no path is specified, both versions use `git rev-parse --show-toplevel` to find the root of the current git repository and search there.
+@@ ... @@
 
 ## License
 
