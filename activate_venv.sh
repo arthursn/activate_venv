@@ -21,7 +21,7 @@ activate_venv() {
         "Scripts/activate" # Windows
     )
 
-    script_candidates=()
+    local script_candidates=()
     local root
     local relpath
     for root in "${root_folders[@]}"; do
