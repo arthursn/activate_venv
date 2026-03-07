@@ -4,14 +4,17 @@ function ActivateVenv {
     )
 
     $ScriptCandidates = @(
-        "$Dir\Scripts\Activate.ps1",
-        "$Dir\.venv\Scripts\Activate.ps1"
+        "$Dir/Scripts/activate.ps1",
+        "$Dir/.venv/Scripts/activate.ps1",
+        "$Dir/bin/activate.ps1",
+        "$Dir/.venv/bin/activate.ps1"
     )
 
     try {
         $GitRepo = git rev-parse --show-toplevel 2>$null
         if ($?) {
-            $ScriptCandidates += "$GitRepo\.venv\Scripts\Activate.ps1"
+            $ScriptCandidates += "$GitRepo/.venv/Scripts/activate.ps1"
+            $ScriptCandidates += "$GitRepo/.venv/bin/activate.ps1"
         }
     }
     catch {
