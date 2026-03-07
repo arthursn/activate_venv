@@ -1,20 +1,34 @@
 activate_venv() {
     local dir="${1:-.}"
-    local script_candidates=(
-        "$dir/bin/activate"
-        "$dir/.venv/bin/activate"
-        "$dir/Scripts/activate"
-        "$dir/.venv/Scripts/activate"
+    local git_repo
+    local root_folders=("$dir")
+
+    # If .venv folder exists, prepend $dir/.venv to root folder candidates
+    if [ -d $dir/.venv ]; then
+        root_folders=($dir/.venv ${git_repo[@]})
+    fi
+
+    # If in a git repo and .venv exists, prepend $git_repo/.venv to root folder candidates
+    if git_repo="$(git rev-parse --show-toplevel 2>/dev/null)"; then
+        if [ -d $git_repo/.venv ]; then
+            root_folders=($git_repo/.venv ${git_repo[@]})
+        fi
+    fi
+
+    # Activation scripts relative paths
+    local script_paths=(
+        "bin/activate"     # Unix
+        "Scripts/activate" # Windows
     )
 
-    # Add git repo root venv if in a git repo
-    local git_repo
-    if git_repo="$(git rev-parse --show-toplevel 2>/dev/null)"; then
-        script_candidates+=(
-            "$git_repo/.venv/bin/activate"
-            "$git_repo/.venv/Scripts/activate"
-        )
-    fi
+    script_candidates=()
+    local root
+    local relpath
+    for root in "${root_folders[@]}"; do
+        for relpath in "${script_paths[@]}"; do
+            script_candidates+=("$root/$relpath")
+        done
+    done
 
     # Try each candidate
     local script
