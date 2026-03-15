@@ -11,12 +11,12 @@ function ActivateVenv {
         $RootFolders = @("$Dir/.venv") + $RootFolders
     }
 
-    # If in a git repo and .venv exists, prepend $GitRepo/.venv to root folder candidates
+    # If in a git repo and .venv exists, append $GitRepo/.venv to root folder candidates
     try {
         $GitRepo = git rev-parse --show-toplevel 2>$null
         if ($?) {
             if (Test-Path "$GitRepo/.venv") {
-                $RootFolders = @("$GitRepo/.venv") + $RootFolders
+                $RootFolders += "$GitRepo/.venv"
             }
         }
     }
