@@ -5,13 +5,13 @@ activate_venv() {
 
     # If .venv folder exists, prepend $dir/.venv to root folder candidates
     if [ -d $dir/.venv ]; then
-        root_folders=($dir/.venv ${git_repo[@]})
+        root_folders=($dir/.venv)
     fi
 
     # If in a git repo and .venv exists, append $git_repo/.venv to root folder candidates
     if git_repo="$(git rev-parse --show-toplevel 2>/dev/null)"; then
         if [ -d $git_repo/.venv ]; then
-            root_folders+=($git_repo)
+            root_folders+=($git_repo/.venv)
         fi
     fi
 
