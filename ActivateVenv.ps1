@@ -3,6 +3,11 @@ function ActivateVenv {
         [string]$Dir = "."
     )
 
+    if (-not (Test-Path "$Dir" -PathType Container)) {
+        Write-Host "$Dir is not a directory"
+        return
+    }
+
     # Initialize root folders array
     $RootFolders = @("$Dir")
 
@@ -13,7 +18,7 @@ function ActivateVenv {
 
     # If in a git repo and .venv exists, append $GitRepo/.venv to root folder candidates
     try {
-        $GitRepo = git rev-parse --show-toplevel 2>$null
+        $GitRepo = git -C "$Dir" rev-parse --show-toplevel 2>$null
         if ($?) {
             if (Test-Path "$GitRepo/.venv") {
                 $RootFolders += "$GitRepo/.venv"
